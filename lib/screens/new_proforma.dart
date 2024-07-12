@@ -1,0 +1,187 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/add_items.dart';
+import 'package:flutter_application_1/screens/select_customer.dart';
+
+class ProformaInvoiceScreen extends StatefulWidget {
+  @override
+  _ProformaInvoiceScreenState createState() => _ProformaInvoiceScreenState();
+}
+
+class _ProformaInvoiceScreenState extends State<ProformaInvoiceScreen> {
+  int itemCount = 3;
+  double totalPrice = 3600;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            setState(() {
+              Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ListScreen()
+          ),
+        );
+            });
+          },
+        ),
+        title: Text('New Proforma Invoice'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                prefixIcon: Icon(Icons.search, color: Colors.blue),
+                hintText: 'Search',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: Card(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.woman_rounded, size: 50),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Leather Bag', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                Text('Women\'s Accessories', style: TextStyle(fontSize: 14, color: Colors.grey)),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            side: BorderSide(color: Colors.blue),
+                                          ),
+                                        ),
+                                        child: Text('Add',
+                                        style: TextStyle(color: Colors.black, fontSize: 16),),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    SizedBox(
+                                      width: 150,
+                                      height: 50,
+                                      child: TextField(
+                                        controller: TextEditingController(text: 'SU1'),
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Color.fromARGB(255, 173, 169, 169)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(Icons.woman_rounded),
+                SizedBox(width: 10),
+                Column(
+                  children: [
+                    Text('$itemCount Items', style: TextStyle(fontSize: 16)),
+                    Expanded(child: Text('₹ $totalPrice', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1570EF)))),
+                  ],
+                ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddItems()
+          ),
+        );
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.arrow_forward, color: Colors.white),
+                      Text('Next',style: TextStyle(color: Colors.white,fontSize: 18),),
+                      
+                    ],
+                  ),
+                   style: ElevatedButton.styleFrom(
+                                         backgroundColor: Color(0xFF1570EF),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            side: BorderSide(color: Colors.blue),
+                                          ),
+                                        ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
