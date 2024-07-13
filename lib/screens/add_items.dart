@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/new_proforma.dart';
+import 'package:flutter_application_1/screens/new_tax_invoice.dart';
 
 class AddItems extends StatefulWidget {
   @override
@@ -226,7 +227,7 @@ class _AddItemsScreenState extends State<AddItems> {
                     Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => AddItems()
+            builder: (context) => NewTaxInvoiceScreen()
           ),
         );
                   },

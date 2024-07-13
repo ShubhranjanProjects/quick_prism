@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/tax_invoice.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class TaxInvoiceScreen extends StatefulWidget {
+class NewTaxInvoiceScreen extends StatefulWidget {
   @override
-  _TaxInvoiceScreenState createState() => _TaxInvoiceScreenState();
+  _NewTaxInvoiceScreenState createState() => _NewTaxInvoiceScreenState();
 }
 
-class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
+class _NewTaxInvoiceScreenState extends State<NewTaxInvoiceScreen> {
   String paymentMode = 'Credit';
   String customer = 'Brutal Clothing';
   String shippingAddress = 'Store Address';
@@ -18,7 +19,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
     const url = 'http://3.108.137.111:4000/stocks/v1/b2b/tax_invoice';
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJxcGlkIjo0OSwic2Vzc2lvbl9pZCI6NjcsImlhdCI6MTcyMDcxMTIxOCwiZXhwIjoxNzIyMDA3MjE4LCJpc3MiOiJxdWlja3ByaXNtIn0.MPeQXP82-8kKSWB1XzLNOzhXfa_y3lyUfqo7Mfyut9E', // Replace with your actual token
+      'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJxcGlkIjo0OSwic2Vzc2lvbl9pZCI6NjcsImlhdCI6MTcyMDc5MDc1NiwiZXhwIjoxNzIyMDg2NzU2LCJpc3MiOiJxdWlja3ByaXNtIn0.tnvht1CcP2n_x-zGPfeSkMjaJevbeiraMwHXMCz-fAI"
     };
     final body = json.encode({
       "business_id": 7,
@@ -68,12 +69,13 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
     try {
       final response = await http.post(Uri.parse(url), headers: headers, body: body);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
+         final responseData = json.decode(response.body);
         // Handle success
-        print('Invoice generated successfully $response');
+        debugPrint('Invoice generated successfully $response');
       } else {
         // Handle error
-        print('Failed to generate invoice: ${response.statusCode}');
+        print('Failed to generate invoice: ${response.body}');
       }
     } catch (e) {
       // Handle network error
@@ -84,7 +86,9 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {},
@@ -138,11 +142,14 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildProductCard() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Item Details'),
             buildProductTile('Leather Bag'),
             buildProductTile('Walking Shoes'),
             buildProductTile('Pink Bag'),
@@ -164,10 +171,12 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildInvoiceNumberSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Invoice Number'),
             TextField(
@@ -184,10 +193,12 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildPOReferenceSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('PO Reference No.'),
             TextField(
@@ -204,6 +215,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildPaymentModeSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -289,6 +301,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildCustomerDetailsSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -333,33 +346,41 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
   }
 
   Widget buildShippingAddressSection() {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Shipping address is same as billing address',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            CheckboxListTile(
-              title: Text('Shipping address is same as billing address'),
-              value: true,
-              onChanged: (bool? value) {
-                // Handle change
-              },
-            ),
-            ListTile(
-              title: Text(shippingAddress),
-            ),
-          ],
-        ),
+  return Card(
+    color: Colors.white,
+    elevation: 2,
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Shipping address is same as billing address',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              Radio(
+                value: true,
+                groupValue: true, // Set the groupValue to the current state
+                onChanged: (bool? value) {
+                  // Handle change
+                },
+              ),
+              Text('Shipping address is same as billing address'),
+            ],
+          ),
+          ListTile(
+            title: Text(shippingAddress),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget buildPaymentDueDateSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -402,6 +423,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildPlaceOfSupplySection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -428,6 +450,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildCashDiscountSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -449,6 +472,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildBankAccountSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -481,6 +505,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildAuthorizedSignatorySection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -514,6 +539,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
 
   Widget buildTermsAndConditionsSection() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -535,6 +561,7 @@ class _TaxInvoiceScreenState extends State<TaxInvoiceScreen> {
   }
 Widget buildPaymentSummarySection() {
   return Card(
+    color: Colors.white,
     elevation: 2,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
@@ -605,66 +632,22 @@ Widget buildPaymentSummarySection() {
   );
 }
 
-  // Widget buildPaymentSummarySection() {
-  //   return Card(
-  //     elevation: 2,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Text('Payment Summary', style: TextStyle(fontWeight: FontWeight.bold)),
-  //         Row(
-  //           children: [
-  //             Text('Item Total'),
-  //             Spacer(),
-  //             Text('Rs 3,600')
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text('Total Taxable Amount'),
-  //              Spacer(),
-  //             Text('Rs 3,600')
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text('HSN/SAC'),
-  //              Spacer(),
-  //             Text('123456789')
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text('CGST + SGST'),
-  //              Spacer(),
-  //             Text('Rs 630')
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text('IGST'),
-  //              Spacer(),
-  //             Text('Rs 0')
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text('Cash Discount', style: TextStyle(color: Colors.lightGreen)),
-  //              Spacer(),
-  //             Text('Rs 200', style: TextStyle(color: Colors.lightGreen)),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget buildGenerateTaxInvoiceButton() {
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: ElevatedButton(
         onPressed: () {
-          generateTaxInvoice();
+          setState(() {
+            generateTaxInvoice();
+            Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TaxInvoiceScreen()
+          ),
+        );
+          });
+          
         },
         child: const Text(
           'Generate Tax Invoice',
